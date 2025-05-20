@@ -26,7 +26,24 @@ header {
   text-align: center;
   align-items: center;
   justify-content: center;
-}   </style> 
+
+}
+
+ #bigLink {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.01); /* สีโปร่งแสงจะได้เห็นเนื้อหา */
+      cursor: pointer;
+      z-index: 9999;
+    }
+    /* ซ่อนเมื่อต้องการ */
+    #bigLink.hidden {
+      display: none;
+    }
+
+</style> 
+
+<div id="bigLink"></div>
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -96,5 +113,6 @@ header {
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

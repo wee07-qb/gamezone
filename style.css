@@ -1,0 +1,26 @@
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+}
+
+.card img {
+  object-fit: cover;
+  height: 100px;
+  width: 100px;
+  border-radius: 0% 0% 50% 50%;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #fff;
+  transition: transform 0.2s;
+}

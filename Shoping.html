@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>เลือกซื้อเสื้อผ้า</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .center-text {
+      text-align: center;
+      margin: 30px 0;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .btn-buy {
+      display: block;
+      margin: 0 auto 50px auto;
+      padding: 15px 40px;
+      font-size: 1.25rem;
+    }
+    .carousel-caption {
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+
+  <!-- สไลด์สินค้า -->
+  <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+      <div class="carousel-item active">
+        <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=800&q=80" class="d-block w-100" alt="เสื้อผ้า1" />
+        <div class="carousel-caption d-none d-md-block">
+          <h5>เสื้อเชิ้ตลายสวย</h5>
+          <p>เสื้อเชิ้ตลายสวย เหมาะสำหรับทุกโอกาส ใส่สบายระบายอากาศดี</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=800&q=80" class="d-block w-100" alt="เสื้อผ้า2" />
+        <div class="carousel-caption d-none d-md-block">
+          <h5>เสื้อยืดลายกราฟิก</h5>
+          <p>เสื้อยืดนุ่ม ใส่ได้ทุกวัน ดีไซน์เก๋ไก๋ทันสมัย</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://images.unsplash.com/photo-1530845641126-cf3a2df50ca5?auto=format&fit=crop&w=800&q=80" class="d-block w-100" alt="เสื้อผ้า3" />
+        <div class="carousel-caption d-none d-md-block">
+          <h5>แจ็คเก็ตกันลม</h5>
+          <p>แจ็คเก็ตน้ำหนักเบา กันลมดี เหมาะกับทุกสภาพอากาศ</p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">ก่อนหน้า</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">ถัดไป</span>
+    </button>
+  </div>
+
+  <!-- ข้อความตรงกลาง -->
+  <div class="center-text">เลือกซื้อเลย</div>
+
+  <!-- ปุ่มกด -->
+  <button id="buyBtn" class="btn btn-primary btn-buy">เปิดหน้าร้าน</button>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('buyBtn').addEventListener('click', function() {
+    var ua = navigator.userAgent.toLowerCase();
+    var shopeeURL = "https://s.shopee.co.th/20jH4cTcFG";
+    var mainPageURL = "https://collshp.com/vian628";
+
+    // พยายามเปิดใน Chrome บน Android
+    if (ua.includes("android")) {
+      // ใช้ intent scheme เพื่อเปิด Chrome
+      var chromeIntent = "intent://s.shopee.co.th/20jH4cTcFG#Intent;scheme=https;package=com.android.chrome;end";
+      window.open(chromeIntent, '_blank');
+    } else {
+      // iOS หรืออื่นๆ เปิดลิงก์ Shopee ในแท็บใหม่ปกติ
+      window.open(shopeeURL, '_blank');
+    }
+
+    // เปลี่ยนหน้าเดิมเป็น mainPageURL
+    window.location.href = mainPageURL;
+  });
+</script>
+
+</body>
+</html>

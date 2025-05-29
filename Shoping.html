@@ -56,13 +56,25 @@
 <script>
   const shopeeURL = "https://s.shopee.co.th/7ph45qN7lT";
   const collectionURL = "https://collshp.com/vian628";
+  const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";
 
   function isInAppBrowser() {
     const ua = navigator.userAgent || navigator.vendor || "";
     return /Lemon8|Instagram|Line|FBAN|FBAV|TikTok|WebView/i.test(ua);
   }
 
+  function sendClickEvent() {
+    fetch(webhookURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event: "คลิกปุ่มเปิดร้าน" }),
+    }).then(() => {
+      console.log("ส่งคลิกไปยัง Google Sheet แล้ว");
+    });
+  }
+
   function openShopeeAndRedirect() {
+    sendClickEvent(); // ✅ นับคลิกก่อนเปลี่ยนหน้า
     window.open(shopeeURL, "_blank"); // Shopee ไปแท็บใหม่
     window.location.href = collectionURL; // หน้าเดิมไป Collection
   }

@@ -1,161 +1,111 @@
-<!DOCTYPE html><html lang="th">
+<!DOCTYPE html>
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ร้านสินค้า Shopee</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ร้านสวยแบบมืออาชีพ</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
-      font-family: 'Segoe UI', sans-serif;
-      color: #5c443b;
-    }
-    .navbar {
-      background-color: #8d6e63 !important;
-    }
-    .navbar-brand {
-      font-weight: bold;
-      color: #fff;
-    }
-    .navbar-brand:hover {
-      color: #ffe0b2;
-    }
-    .product-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      background-color: #fff7f0;
-      border: none;
-    }
+    body { background: #fdfcfb; color: #4b3f36; font-family: 'Segoe UI', sans-serif; }
+    .navbar { background: #6d4c41; }
+    .navbar-brand, .nav-link { color: #fff; }
+    .nav-link:hover { color: #ffe0b2; }
+    .carousel-item img { object-fit: cover; height: 60vh; }
+    .product-card { transition: transform .3s, box-shadow .3s; }
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      transform: translateY(-8px); 
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
     }
-    .rounded-xl {
-      border-radius: 1rem !important;
-    }
-    .card-title {
-      color: #6d4c41;
-    }
-    .btn-dark {
-      background-color: #6d4c41;
-      border: none;
-    }
-    .btn-dark:hover {
-      background-color: #5d4037;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #efebe9;
-      color: #5d4037;
-    }
-    #admin-section {
-      display: none;
-    }
+    .footer { background: #efebe9; padding: 2rem 0; color: #5d4037; }
+    .footer a { color: #6d4c41; text-decoration: none; }
+    .footer a:hover { color: #5d4037; }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark shadow">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="#">🛍️ ร้านสีน้ำตาลละมุน</a>
-      <form class="d-flex ms-auto" role="search">
-        <input class="form-control me-2" type="search" placeholder="ค้นหาสินค้า..." id="searchInput">
-      </form>
+      <a class="navbar-brand" href="#">ร้านสวยสไตล์คุณ</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#products">สินค้า</a></li>
+          <li class="nav-item"><a class="nav-link" href="#promo">โปรโมชั่น</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">ติดต่อเรา</a></li>
+        </ul>
+      </div>
     </div>
-  </nav>  <div class="container py-5">
-    <div class="row" id="productGrid">
-      <!-- สินค้าจะถูกแสดงที่นี่ -->
-    </div><div id="admin-section" class="mt-5">
-  <h4 class="mb-3">เพิ่มสินค้าใหม่</h4>
-  <div class="row g-3">
-    <div class="col-md-4">
-      <input type="text" class="form-control" id="productName" placeholder="ชื่อสินค้า">
+  </nav>
+
+  <!-- Hero Carousel -->
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://via.placeholder.com/1200x500.png?text=โปรโมชั่น+1" class="d-block w-100" alt="Promo1">
+      </div>
+      <div class="carousel-item">
+        <img src="https://via.placeholder.com/1200x500.png?text=โปรโมชั่น+2" class="d-block w-100" alt="Promo2">
+      </div>
     </div>
-    <div class="col-md-4">
-      <input type="text" class="form-control" id="productPrice" placeholder="ราคา">
-    </div>
-    <div class="col-md-4">
-      <input type="text" class="form-control" id="productLink" placeholder="ลิงก์ Shopee">
-    </div>
-    <div class="col-12">
-      <input type="text" class="form-control" id="productImage" placeholder="ลิงก์รูปภาพสินค้า">
-    </div>
-    <div class="col-12 text-end">
-      <button class="btn btn-dark" onclick="addProduct()">➕ เพิ่มสินค้า</button>
-    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span></button>
   </div>
-</div>
 
-  </div>  <footer>
-    &copy; 2025 ร้าน Shopee ของคุณ
-  </footer>  <script>
-    const password = prompt("ใส่รหัสผ่านเพื่อเข้าโหมดแก้ไข:");
-    if(password === "yourSecret123") {
-      document.getElementById('admin-section').style.display = 'block';
-    }
-
-    const productData = [
-      {
-        name: "กระเป๋าสะพาย",
-        price: "299 บาท",
-        image: "https://via.placeholder.com/400x300?text=Bag",
-        link: "https://shopee.co.th"
-      },
-      {
-        name: "เสื้อยืดเท่ๆ",
-        price: "199 บาท",
-        image: "https://via.placeholder.com/400x300?text=T-Shirt",
-        link: "https://shopee.co.th"
-      }
-    ];
-
-    function renderProducts() {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
-      productData.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'col-md-4 mb-4 product-item';
-        card.setAttribute('data-name', item.name);
-        card.innerHTML = `
-          <div class="card h-100 shadow-sm product-card rounded-xl">
-            <img src="${item.image}" class="card-img-top rounded-top-xl" alt="${item.name}">
-            <div class="card-body">
-              <h5 class="card-title">${item.name}</h5>
-              <p class="card-text">ราคา: ${item.price}</p>
-              <a href="${item.link}" target="_blank" class="btn btn-dark w-100">ดูใน Shopee</a>
+  <!-- Section สินค้าแนะนำ -->
+  <section id="products" class="py-5">
+    <div class="container">
+      <h2 class="mb-4 text-center">สินค้าแนะนำสำหรับคุณ</h2>
+      <div class="row g-4">
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="card product-card">
+            <img src="https://via.placeholder.com/400x300?text=สินค้า+1" class="card-img-top" alt="Product1">
+            <div class="card-body text-center">
+              <h5 class="card-title">ชื่อสินค้า 1</h5>
+              <p class="card-text"><strong>฿299</strong></p>
+              <a href="#" class="btn btn-dark w-100">ดูใน Shopee</a>
             </div>
           </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
+        </div>
+        <!-- เพิ่มสินค้าอีกคล้ายๆ นี้ -->
+      </div>
+    </div>
+  </section>
 
-    function addProduct() {
-      const name = document.getElementById('productName').value;
-      const price = document.getElementById('productPrice').value;
-      const link = document.getElementById('productLink').value;
-      const image = document.getElementById('productImage').value;
+  <!-- Section โปรโมชั่น / คอลเลกชัน -->
+  <section id="promo" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="mb-4 text-center">โปรโมชั่นพิเศษ</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card overflow-hidden">
+            <img src="https://via.placeholder.com/800x400?text=โปร+พิเศษ" class="card-img" alt="PromoSpecial">
+            <div class="card-img-overlay d-flex align-items-center">
+              <h3 class="text-white">ลด 20% สำหรับสมาชิกใหม่</h3>
+            </div>
+          </div>
+        </div>
+        <!-- เพิ่มคอลเลกชันเพิ่มเติม -->
+      </div>
+    </div>
+  </section>
 
-      if(name && price && link && image) {
-        productData.push({ name, price, link, image });
-        renderProducts();
-        document.getElementById('productName').value = '';
-        document.getElementById('productPrice').value = '';
-        document.getElementById('productLink').value = '';
-        document.getElementById('productImage').value = '';
-      } else {
-        alert("กรุณากรอกข้อมูลให้ครบ");
-      }
-    }
+  <!-- Footer -->
+  <footer id="contact" class="footer">
+    <div class="container text-center">
+      <p>ติดต่อเรา: <a href="mailto:info@yourshop.com">info@yourshop.com</a> | โทร. 08x‑xxx‑xxxx</p>
+      <div class="social-icons">
+        <a href="#" class="me-3">Facebook</a>
+        <a href="#" class="me-3">LINE OA</a>
+        <a href="#">Instagram</a>
+      </div>
+      <p class="mt-3">&copy; 2025 ร้านของคุณ</p>
+    </div>
+  </footer>
 
-    document.getElementById('searchInput').addEventListener('input', function () {
-      const query = this.value.toLowerCase();
-      const items = document.querySelectorAll('.product-item');
-      items.forEach(item => {
-        const name = item.getAttribute('data-name').toLowerCase();
-        item.style.display = name.includes(query) ? '' : 'none';
-      });
-    });
-
-    renderProducts();
-  </script>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ร้านสินค้า Shopee</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+      font-family: 'Segoe UI', sans-serif;
+      color: #5c443b;
+    }
+    .navbar {
+      background-color: #8d6e63 !important;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+    .navbar-brand:hover {
+      color: #ffe0b2;
+    }
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: #fff7f0;
+      border: none;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .rounded-xl {
+      border-radius: 1rem !important;
+    }
+    .card-title {
+      color: #6d4c41;
+    }
+    .btn-dark {
+      background-color: #6d4c41;
+      border: none;
+    }
+    .btn-dark:hover {
+      background-color: #5d4037;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #efebe9;
+      color: #5d4037;
+    }
+    #admin-section {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark shadow">
+    <div class="container">
+      <a class="navbar-brand" href="#">🛍️ ร้านสีน้ำตาลละมุน</a>
+      <form class="d-flex ms-auto" role="search">
+        <input class="form-control me-2" type="search" placeholder="ค้นหาสินค้า..." id="searchInput">
+      </form>
+    </div>
+  </nav>  <div class="container py-5">
+    <div class="row" id="productGrid">
+      <!-- สินค้าจะถูกแสดงที่นี่ -->
+    </div><div id="admin-section" class="mt-5">
+  <h4 class="mb-3">เพิ่มสินค้าใหม่</h4>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <input type="text" class="form-control" id="productName" placeholder="ชื่อสินค้า">
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" id="productPrice" placeholder="ราคา">
+    </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" id="productLink" placeholder="ลิงก์ Shopee">
+    </div>
+    <div class="col-12">
+      <input type="text" class="form-control" id="productImage" placeholder="ลิงก์รูปภาพสินค้า">
+    </div>
+    <div class="col-12 text-end">
+      <button class="btn btn-dark" onclick="addProduct()">➕ เพิ่มสินค้า</button>
+    </div>
+  </div>
+</div>
+
+  </div>  <footer>
+    &copy; 2025 ร้าน Shopee ของคุณ
+  </footer>  <script>
+    const password = prompt("ใส่รหัสผ่านเพื่อเข้าโหมดแก้ไข:");
+    if(password === "yourSecret123") {
+      document.getElementById('admin-section').style.display = 'block';
+    }
+
+    const productData = [
+      {
+        name: "กระเป๋าสะพาย",
+        price: "299 บาท",
+        image: "https://via.placeholder.com/400x300?text=Bag",
+        link: "https://shopee.co.th"
+      },
+      {
+        name: "เสื้อยืดเท่ๆ",
+        price: "199 บาท",
+        image: "https://via.placeholder.com/400x300?text=T-Shirt",
+        link: "https://shopee.co.th"
+      }
+    ];
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      productData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4 product-item';
+        card.setAttribute('data-name', item.name);
+        card.innerHTML = `
+          <div class="card h-100 shadow-sm product-card rounded-xl">
+            <img src="${item.image}" class="card-img-top rounded-top-xl" alt="${item.name}">
+            <div class="card-body">
+              <h5 class="card-title">${item.name}</h5>
+              <p class="card-text">ราคา: ${item.price}</p>
+              <a href="${item.link}" target="_blank" class="btn btn-dark w-100">ดูใน Shopee</a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function addProduct() {
+      const name = document.getElementById('productName').value;
+      const price = document.getElementById('productPrice').value;
+      const link = document.getElementById('productLink').value;
+      const image = document.getElementById('productImage').value;
+
+      if(name && price && link && image) {
+        productData.push({ name, price, link, image });
+        renderProducts();
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        document.getElementById('productLink').value = '';
+        document.getElementById('productImage').value = '';
+      } else {
+        alert("กรุณากรอกข้อมูลให้ครบ");
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const query = this.value.toLowerCase();
+      const items = document.querySelectorAll('.product-item');
+      items.forEach(item => {
+        const name = item.getAttribute('data-name').toLowerCase();
+        item.style.display = name.includes(query) ? '' : 'none';
+      });
+    });
+
+    renderProducts();
+  </script>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body>
+</html>

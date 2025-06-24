@@ -36,3 +36,11 @@ header {
     #bigLink.hidden {
       display: none;
     }
+
+#hot-item {
+    position: absolute;
+    object-fit: contain;
+    width: 50px;
+    right: -20px;
+    top: -50px;
+}

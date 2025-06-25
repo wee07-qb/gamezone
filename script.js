@@ -1,5 +1,5 @@
  const bigLink = document.getElementById('bigLink');
-    const redirectUrl = "https://s.shopee.co.th/2B1jiJVvRR";
+    const redirectUrl = "https://s.shopee.co.th/1LUHG694Ai";
     const waitTime = 60000; // 1 นาทีเป็นมิลลิวินาที
     const storageKey = 'bigLinkLastClicked';
 

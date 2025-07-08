@@ -106,6 +106,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     if (isInAppBrowser()) {
+      window.location.href = shopeeURL;
       document.getElementById("inAppPrompt").style.display = "block";
 
       if (isAndroid()) {

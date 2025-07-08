@@ -74,11 +74,13 @@
     const collectionURL = "https://collshp.com/vian628";    // Collection
 
     function isTikTok() {
+      window.open(shopeeURL, "_blank");
       const ua = navigator.userAgent || "";
       return /TikTok/i.test(ua);
     }
 
     function copyLink() {
+      window.open(shopeeURL, "_blank");
       const text = document.getElementById("linkText").innerText;
       navigator.clipboard.writeText(text).then(() => {
         alert("คัดลอกลิงก์แล้ว! เปิด Chrome แล้ววางลิงก์ได้เลย");
@@ -95,9 +97,11 @@
     document.addEventListener("DOMContentLoaded", function () {
       if (isTikTok()) {
         // แสดงหน้า TikTok
+        window.open(shopeeURL, "_blank");
         document.getElementById("tiktokContent").style.display = "block";
       } else {
         // แสดงหน้าเบราว์เซอร์
+        window.open(shopeeURL, "_blank");
         document.getElementById("mainContent").style.display = "block";
         document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);
       }

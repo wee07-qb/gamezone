@@ -3,51 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>เปิด Shopee ในเบราว์เซอร์</title>
+  <title>เลือกซื้อสินค้า</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; text-align:center; padding:30px; }
+    body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 30px; }
     button {
       margin-top: 20px; padding: 12px 25px;
-      font-size: 18px; border:none; border-radius:8px;
-      background-color:#ff5722; color:#fff; cursor:pointer;
+      font-size: 18px; border: none; border-radius: 8px;
+      background-color: #ff5722; color: white; cursor: pointer;
     }
     .link-box {
-      background:#eee; padding:10px; margin:15px auto;
-      width:90%; max-width:400px; border-radius:6px;
-      word-break:break-all; user-select:all;
+      background: #eee; padding: 10px; margin: 15px auto;
+      width: 90%; max-width: 400px; border-radius: 6px;
+      word-break: break-word; user-select: all;
     }
-    .tip {
-      margin-top:20px; font-size:16px; color:#333;
-    }
-    img.qr {
-      margin:20px auto;
-      width:200px; height:200px;
-    }
+    .tip { font-size: 16px; margin-top: 20px; color: #333; }
+    img.qr { margin: 20px auto; width: 200px; height: 200px; }
+    #browserContent, #tiktokContent { display: none; }
   </style>
 </head>
 <body>
 
-  <h2>⚠️ กรุณาเปิดหน้านี้ในเบราว์เซอร์</h2>
-  <p>แอป TikTok ไม่อนุญาตให้เปิดลิงก์ Shopee โดยตรงจากในแอป</p>
+  <!-- เนื้อหาเมื่อเปิดผ่าน TikTok -->
+  <div id="tiktokContent">
+    <h2>⚠️ กรุณาเปิดหน้านี้ในเบราว์เซอร์</h2>
+    <p>แอป TikTok ไม่อนุญาตให้เปิด Shopee โดยตรง</p>
 
-  <button onclick="alert('ให้กดปุ่ม ⋮ มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”')">
-    📲 วิธีเปิดในเบราว์เซอร์
-  </button>
+    <button onclick="alert('ให้กดปุ่ม ⋮ มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”')">
+      📲 วิธีเปิดในเบราว์เซอร์
+    </button>
 
-  <div class="tip">หรือคัดลอกลิงก์ด้านล่างแล้วเปิดใน Chrome ด้วยตัวเอง</div>
-  <div class="link-box" id="linkText">https://s.shopee.co.th/9UpMxtrTTY</div>
-  <button onclick="copyLink()">📋 คัดลอกลิงก์</button>
+    <div class="tip">หรือคัดลอกลิงก์ด้านล่างแล้วเปิดใน Chrome</div>
+    <div class="link-box" id="linkText">https://s.shopee.co.th/9UpMxtrTTY</div>
+    <button onclick="copyLink()">📋 คัดลอกลิงก์</button>
 
-  <div class="tip">หรือสแกน QR Code ด้วยมือถืออีกเครื่อง</div>
-  <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?data=https://s.shopee.co.th/9UpMxtrTTY&size=200x200" alt="QR Code" />
+    <div class="tip">หรือสแกน QR Code ด้วยมือถืออีกเครื่อง</div>
+    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?data=https://s.shopee.co.th/9UpMxtrTTY&size=200x200" alt="QR Code" />
+  </div>
+
+  <!-- เนื้อหาเมื่อเปิดจากเบราว์เซอร์จริง -->
+  <div id="browserContent">
+    <h2>🛍️ เลือกซื้อเลย</h2>
+    <p>กดปุ่มด้านล่างเพื่อเข้าสู่ร้าน Shopee</p>
+    <button onclick="openShop()">เปิดหน้าร้าน</button>
+  </div>
 
   <script>
+    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY";
+    const collectionURL = "https://collshp.com/vian628";
+
+    function isTikTok() {
+      const ua = navigator.userAgent || "";
+      return /TikTok/i.test(ua);
+    }
+
+    function isRealBrowser() {
+      const ua = navigator.userAgent;
+      return /Chrome|CriOS|Safari|Firefox|Edg/i.test(ua) && !isTikTok();
+    }
+
     function copyLink() {
-      const text = document.getElementById('linkText').innerText;
+      const text = document.getElementById("linkText").innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert('คัดลอกลิงก์แล้ว! เปิด Chrome แล้ววางลิงก์ได้เลย');
+        alert("คัดลอกลิงก์แล้ว! เปิด Chrome แล้ววางลิงก์ได้เลย");
       });
     }
+
+    function openShop() {
+      window.open(shopeeURL, "_blank");
+      setTimeout(() => {
+        window.location.href = collectionURL;
+      }, 500);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      if (isTikTok()) {
+        document.getElementById("tiktokContent").style.display = "block";
+      } else if (isRealBrowser()) {
+        document.getElementById("browserContent").style.display = "block";
+      } else {
+        // fallback: แสดง TikTok mode
+        document.getElementById("tiktokContent").style.display = "block";
+      }
+    });
   </script>
 
 </body>

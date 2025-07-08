@@ -65,8 +65,7 @@
   </div>
 
   <script>
-    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY";
-    const collectionURL = "https://collshp.com/vian628";
+    const collectionURL = "https://collshp.com/vian628"; // หน้าระหว่างทาง
     const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";
 
     const ua = navigator.userAgent || navigator.vendor || "";
@@ -95,10 +94,7 @@
 
     function openShopeeAndRedirect() {
       sendClickEvent();
-      window.location.href = shopeeURL;
-      setTimeout(() => {
-        fetch(collectionURL, { mode: 'no-cors' }).catch(() => {});
-      }, 1500);
+      window.location.href = collectionURL; // ไปยังหน้า Collection ก่อน
     }
 
     function openInBrowserIntent() {
@@ -134,96 +130,4 @@
     });
   </script>
 </body>
-</html>ser {  
-      padding: 15px 30px;  
-      background-color: #ff5722;  
-      color: white;  
-      font-size: 18px;  
-      border: none;  
-      border-radius: 8px;  
-      cursor: pointer;  
-      margin-top: 20px;  
-    }  
-    .note-ios {  
-      color: #555;  
-      margin-top: 15px;  
-      font-size: 16px;  
-    }  
-    h2,h4 {  
-      text-align: center;  
-    }  
-  </style>  
-</head>  
-<body>  <div id="inAppPrompt" class="in-app-warning" style="display: none;">  
-  <h2>💚 เปิดหน้านี้ในเบราว์เซอร์</h2>  
-  <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและเร็วที่สุด</p>  
-  <button id="openInBrowser" class="btn-browser">📲 เปิดใน Chrome หรือเบราว์เซอร์</button>  
-  <p id="iosNote" class="note-ios" style="display: none;">  
-    ❗ ถ้าปุ่มไม่ทำงาน ให้กด ⋮ หรือ … มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์”  
-  </p>  
-</div>  <div id="mainContent" style="display: none;">  
-  <div class="container mt-5">  
-    <div class="center-text">เลือกซื้อเลย</div>  
-    <button id="buyBtn" class="btn btn-primary btn-buy">เปิดหน้าร้าน</button>  
-  </div>  
-</div>  <script>  
-  const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY";  
-  const collectionURL = "https://collshp.com/vian628";  
-  const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";  
-  
-  function isInAppBrowser() {  
-    const ua = navigator.userAgent || navigator.vendor || "";  
-    return /Lemon8|Instagram|Line|FBAN|FBAV|TikTok|WebView/i.test(ua);  
-  }  
-  
-  function isAndroid() {  
-    return /Android/i.test(navigator.userAgent);  
-  }  
-  
-  function isIOS() {  
-    return /iPhone|iPad|iPod/i.test(navigator.userAgent);  
-  }  
-  
-  function sendClickEvent() {  
-    fetch(webhookURL, {  
-      method: "POST",  
-      headers: { "Content-Type": "application/json" },  
-      body: JSON.stringify({ event: "คลิกปุ่มเปิดร้าน" }),  
-    }).then(() => {  
-      console.log("ส่งคลิกไปยัง Google Sheet แล้ว");  
-    });  
-  }  
-  
-  function openShopeeAndRedirect() {  
-    window.location.href = collectionURL; // หน้าเดิมไป Collection  
-    window.open(shopeeURL, "_blank");  
-  }  
-  
-  function openInBrowserIntent() {  
-    const fallbackUrl = window.location.href;  
-    window.open(shopeeURL, "_blank");  
-    const intentUrl = `intent://${fallbackUrl.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;  
-    window.location.href = intentUrl;  
-  }  
-  
-  document.addEventListener("DOMContentLoaded", function () {  
-    if (isInAppBrowser()) {  
-      document.getElementById("inAppPrompt").style.display = "block";  
-  
-      if (isAndroid()) {  
-        document.getElementById("openInBrowser").style.display = "inline-block";  
-      }  
-  
-      if (isIOS()) {  
-        document.getElementById("iosNote").style.display = "block";  
-      }  
-    } else {  
-      document.getElementById("mainContent").style.display = "block";  
-    }  
-  
-    document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);  
-    document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);  
-  });  
-</script>  </body>  
-</html>  
- 
+</html>

@@ -41,21 +41,13 @@
       margin-top: 15px;
       font-size: 16px;
     }
-    .loading-screen {
-      display: none;
+    h2, h4 {
       text-align: center;
-      padding: 60px 20px;
-    }
-    .loading-text {
-      font-size: 1.5rem;
-      margin-top: 20px;
-      color: #555;
     }
   </style>
 </head>
 <body>
 
-  <!-- เตือนหากเปิดจากในแอป -->
   <div id="inAppPrompt" class="in-app-warning" style="display: none;">
     <h2>💚 เปิดหน้านี้ในเบราว์เซอร์</h2>
     <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและเร็วที่สุด</p>
@@ -65,7 +57,6 @@
     </p>
   </div>
 
-  <!-- หน้าเลือกซื้อ -->
   <div id="mainContent" style="display: none;">
     <div class="container mt-5">
       <div class="center-text">เลือกซื้อเลย</div>
@@ -73,14 +64,9 @@
     </div>
   </div>
 
-  <!-- หน้ากำลังโหลด / redirect -->
-  <div id="loadingScreen" class="loading-screen">
-    <h2>🛒 กำลังพาคุณไป Shopee...</h2>
-    <p class="loading-text">กรุณารอสักครู่...</p>
-  </div>
-
   <script>
     const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY";
+    const collectionURL = "https://collshp.com/vian628";
     const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";
 
     function isInAppBrowser() {
@@ -101,25 +87,26 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event: "คลิกปุ่มเปิดร้าน" }),
+      }).then(() => {
+        console.log("ส่งคลิกไปยัง Google Sheet แล้ว");
       });
     }
 
-    function openShopeeFlow() {
-      // ซ่อนหน้าเลือกซื้อ, แสดงหน้ากำลังโหลด
-      document.getElementById("mainContent").style.display = "none";
-      document.getElementById("loadingScreen").style.display = "block";
-
-      // รอ 2 วิแล้ว redirect ไป Shopee
+    function openShopeeAndRedirect() {
+      sendClickEvent();
+      window.open(shopeeURL, "_blank"); // Shopee ไปแท็บใหม่
       setTimeout(() => {
-        window.location.href = shopeeURL;
-      }, 2000);
+        window.location.href = collectionURL; // Redirect ไป Collection
+      }, 500);
     }
 
     function openInBrowserIntent() {
-      const fallbackUrl = window.location.href;
-      window.open(shopeeURL, "_blank");
-      const intentUrl = `intent://${fallbackUrl.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
-      window.location.href = intentUrl;
+      const intentUrl = "intent://s.shopee.co.th/9UpMxtrTTY#Intent;scheme=https;package=com.android.chrome;end";
+      try {
+        window.location.href = intentUrl;
+      } catch (e) {
+        window.open(shopeeURL, "_blank");
+      }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -137,11 +124,7 @@
         document.getElementById("mainContent").style.display = "block";
       }
 
-      document.getElementById("buyBtn").addEventListener("click", () => {
-        sendClickEvent();
-        openShopeeFlow();
-      });
-
+      document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);
       document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);
     });
   </script>

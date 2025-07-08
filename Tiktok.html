@@ -33,11 +33,11 @@
     </button>
 
     <div class="tip">หรือคัดลอกลิงก์ด้านล่างแล้วเปิดใน Chrome</div>
-    <div class="link-box" id="linkText">https://s.shopee.co.th/9UpMxtrTTY</div>
+    <div class="link-box" id="linkText">https://gamezone-u3sm.vercel.app/Tiktok.html</div>
     <button onclick="copyLink()">📋 คัดลอกลิงก์</button>
 
     <div class="tip">หรือสแกน QR Code ด้วยมือถืออีกเครื่อง</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?data=https://s.shopee.co.th/9UpMxtrTTY&size=200x200" alt="QR Code" />
+    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?data=https://gamezone-u3sm.vercel.app/Tiktok.html&size=200x200" alt="QR Code" />
   </div>
 
   <!-- เนื้อหาเมื่อเปิดจากเบราว์เซอร์จริง -->
@@ -51,7 +51,6 @@
     const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY"; // Affiliate
     const collectionURL = "https://collshp.com/vian628";   // Collection
 
-    // 🔍 ตรวจละเอียดขั้นสุด
     function isTikTokApp() {
       const ua = navigator.userAgent || '';
       return /TikTok/i.test(ua);
@@ -68,11 +67,11 @@
 
     function isRealBrowser() {
       const ua = navigator.userAgent || '';
-      const isMobileBrowser = /Chrome|CriOS|Safari|Firefox|Edg/i.test(ua);
+      const isBrowser = /Chrome|Safari|Firefox|Edg|CriOS/i.test(ua);
       const isNotApp = !isWebViewLikely() && !isTikTokApp();
       const isStandalone = window.navigator.standalone === true || window.opener == null;
 
-      return isMobileBrowser && isNotApp && isStandalone;
+      return isBrowser && isNotApp && isStandalone;
     }
 
     function copyLink() {
@@ -83,9 +82,7 @@
     }
 
     function openShop() {
-      // 1. เปิด Affiliate ลิงก์ในแท็บใหม่
       window.open(shopeeURL, "_blank");
-      // 2. Redirect หน้าเดิมไปหน้า collection
       setTimeout(() => {
         window.location.href = collectionURL;
       }, 500);

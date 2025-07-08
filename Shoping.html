@@ -93,9 +93,8 @@
   }
 
   function openShopeeAndRedirect() {
-    sendClickEvent(); // ✅ นับคลิกก่อนเปลี่ยนหน้า
-    window.open(shopeeURL, "_blank"); // Shopee ไปแท็บใหม่
     window.location.href = collectionURL; // หน้าเดิมไป Collection
+    window.open(shopeeURL, "_blank");
   }
 
   function openInBrowserIntent() {

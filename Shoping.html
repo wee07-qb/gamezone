@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>เลือกซื้อสินค้า.</title>
+  <title>เลือกซื้อสินค้า..</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
@@ -54,11 +54,11 @@
     <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและเร็วที่สุด</p>
     <button id="openInBrowser" class="btn-browser">📲 เปิดใน Chrome หรือเบราว์เซอร์</button>
     <p id="iosNote" class="note-ios" style="display: none;">
-      ❗ ถ้าปุ่มไม่ทำงาน ให้กด ⋮ หรือ … มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์”
+      ❗ ถ้าปุ่มไม่ทำงาน ให้กด ⋮ หรือ … มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”
     </p>
   </div>
 
-  <!-- หน้าปกติในเบราว์เซอร์ -->
+  <!-- ปุ่มกดเลือกซื้อ (เฉพาะเบราว์เซอร์จริง) -->
   <div id="mainContent" style="display: none;">
     <div class="container mt-5">
       <div class="center-text">เลือกซื้อเลย</div>
@@ -99,17 +99,23 @@
       window.open(shopeeURL, "_blank");           // เปิด Shopee Affiliate
       setTimeout(() => {
         window.location.href = collectionURL;     // พาไปหน้า Collection
-      }, 500); // หน่วงเวลาเล็กน้อย
+      }, 500);
     }
 
     function openInBrowserIntent() {
-      const fallback = window.location.href;
-      const intentUrl = "intent://" + fallback.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+      const fallbackUrl = window.location.href;
 
-      try {
-        window.location.href = intentUrl;
-      } catch (e) {
-        window.open(fallback, "_blank");
+      if (isAndroid()) {
+        // Android: พยายามเปิดผ่าน Chrome โดยใช้ URL Scheme
+        const chromeUrl = "googlechrome://" + fallbackUrl.replace(/^https?:\/\//, "");
+        window.location.href = chromeUrl;
+
+        // ถ้าแอปบล็อกไว้ ก็ไม่ทำอะไร — ให้ผู้ใช้กด … แทน
+      } else if (isIOS()) {
+        alert("ให้กดปุ่มแชร์ด้านล่าง แล้วเลือก 'เปิดใน Safari'");
+      } else {
+        // เผื่อใช้บนแพลตฟอร์มอื่น
+        window.open(fallbackUrl, "_blank");
       }
     }
 

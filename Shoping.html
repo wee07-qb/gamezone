@@ -16,9 +16,9 @@
       font-size: 2rem;
       font-weight: bold;
     }
-    .btn-buy {
+    .btn-action {
       display: block;
-      margin: 0 auto 50px auto;
+      margin: 0 auto 30px auto;
       padding: 15px 40px;
       font-size: 1.25rem;
     }
@@ -48,19 +48,21 @@
 </head>
 <body>
 
+<!-- สำหรับในแอป -->
 <div id="inAppPrompt" class="in-app-warning" style="display: none;">
   <h2>💚 เปิดหน้านี้ในเบราว์เซอร์</h2>
-  <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและเร็วที่สุด</p>
+  <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและได้รับโปรโมชัน</p>
   <button id="openInBrowser" class="btn-browser">📲 เปิดใน Chrome หรือเบราว์เซอร์</button>
   <p id="iosNote" class="note-ios" style="display: none;">
     ❗ ถ้าปุ่มไม่ทำงาน ให้กด ⋮ หรือ … มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์”
   </p>
 </div>
 
+<!-- สำหรับในเบราว์เซอร์ -->
 <div id="mainContent" style="display: none;">
   <div class="container mt-5">
-    <div class="center-text">เลือกซื้อเลย</div>
-    <button id="buyBtn" class="btn btn-primary btn-buy">เปิดหน้าร้าน</button>
+    <div class="center-text">👇 หน้าร้านสินค้าเพิ่มเติม</div>
+    <button id="collectionBtn" class="btn btn-primary btn-action">ไปหน้า Collection</button>
   </div>
 </div>
 
@@ -82,30 +84,31 @@
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  function sendClickEvent() {
+  function sendClickEvent(eventName) {
     fetch(webhookURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event: "คลิกปุ่มเปิดร้าน" }),
+      body: JSON.stringify({ event: eventName }),
     }).then(() => {
-      console.log("ส่งคลิกไปยัง Google Sheet แล้ว");
+      console.log("ส่งข้อมูลคลิกไป Google Sheets แล้ว");
     });
-  }
-
-  function openShopeeAndRedirect() {
-    window.location.href = collectionURL; // หน้าเดิมไป Collection
-    window.open(shopeeURL, "_blank");
   }
 
   function openInBrowserIntent() {
     const fallbackUrl = window.location.href;
-    window.open(shopeeURL, "_blank");
     const intentUrl = `intent://${fallbackUrl.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
+    window.open(shopeeURL, "_blank");
     window.location.href = intentUrl;
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    if (isInAppBrowser()) {
+    if (!isInAppBrowser()) {
+      // ✅ เปิดผ่านเบราว์เซอร์
+      sendClickEvent("เปิดผ่านเบราว์เซอร์");
+      window.open(shopeeURL, "_blank"); // เปิด Shopee affiliate ในแท็บใหม่
+      document.getElementById("mainContent").style.display = "block"; // แสดงปุ่มไป collection
+    } else {
+      // 🚫 เปิดผ่านแอป
       document.getElementById("inAppPrompt").style.display = "block";
 
       if (isAndroid()) {
@@ -115,12 +118,14 @@
       if (isIOS()) {
         document.getElementById("iosNote").style.display = "block";
       }
-    } else {
-      document.getElementById("mainContent").style.display = "block";
+
+      document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);
     }
 
-    document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);
-    document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);
+    document.getElementById("collectionBtn").addEventListener("click", function () {
+      sendClickEvent("คลิกไปหน้า Collection");
+      window.location.href = collectionURL;
+    });
   });
 </script>
 

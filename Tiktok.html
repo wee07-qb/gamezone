@@ -23,13 +23,13 @@
 </head>
 <body>
 
-  <!-- เนื้อหาเมื่อเปิดผ่าน TikTok -->
+  <!-- เนื้อหาเมื่อเปิดผ่าน TikTok / WebView -->
   <div id="tiktokContent">
     <h2>⚠️ กรุณาเปิดหน้านี้ในเบราว์เซอร์</h2>
-    <p>แอป TikTok ไม่อนุญาตให้เปิด Shopee โดยตรง</p>
+    <p>แอป TikTok หรือในแอปอื่น ไม่สามารถเปิด Shopee ได้โดยตรง</p>
 
-    <button onclick="alert('ให้กดปุ่ม ⋮ มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”')">
-      📲 วิธีเปิดในเบราว์เซอร์
+    <button onclick="alert('📲 ให้กดปุ่ม ⋮ มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”')">
+      🔓 วิธีเปิดในเบราว์เซอร์
     </button>
 
     <div class="tip">หรือคัดลอกลิงก์ด้านล่างแล้วเปิดใน Chrome</div>
@@ -44,44 +44,58 @@
   <div id="browserContent">
     <h2>🛍️ เลือกซื้อเลย</h2>
     <p>กดปุ่มด้านล่างเพื่อเข้าสู่ร้าน Shopee</p>
-    <button onclick="openShop()">เปิดหน้าร้าน</button>
+    <button id="buyBtn">เปิดหน้าร้าน</button>
   </div>
 
   <script>
-    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY";
-    const collectionURL = "https://collshp.com/vian628";
+    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY"; // Affiliate
+    const collectionURL = "https://collshp.com/vian628";   // Collection
 
-    function isTikTok() {
-      const ua = navigator.userAgent || "";
+    // 🔍 ตรวจละเอียดขั้นสุด
+    function isTikTokApp() {
+      const ua = navigator.userAgent || '';
       return /TikTok/i.test(ua);
     }
 
+    function isWebViewLikely() {
+      const ua = navigator.userAgent || '';
+      return (
+        /WebView/i.test(ua) ||
+        /\bwv\b/.test(ua) ||
+        /Line|FBAN|FBAV|Instagram|Lemon8/i.test(ua)
+      );
+    }
+
     function isRealBrowser() {
-      const ua = navigator.userAgent;
-      return /Chrome|CriOS|Safari|Firefox|Edg/i.test(ua) && !isTikTok();
+      const ua = navigator.userAgent || '';
+      const isMobileBrowser = /Chrome|CriOS|Safari|Firefox|Edg/i.test(ua);
+      const isNotApp = !isWebViewLikely() && !isTikTokApp();
+      const isStandalone = window.navigator.standalone === true || window.opener == null;
+
+      return isMobileBrowser && isNotApp && isStandalone;
     }
 
     function copyLink() {
       const text = document.getElementById("linkText").innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert("คัดลอกลิงก์แล้ว! เปิด Chrome แล้ววางลิงก์ได้เลย");
+        alert("✅ คัดลอกลิงก์แล้ว! เปิด Chrome แล้ววางลิงก์ได้เลย");
       });
     }
 
     function openShop() {
+      // 1. เปิด Affiliate ลิงก์ในแท็บใหม่
       window.open(shopeeURL, "_blank");
+      // 2. Redirect หน้าเดิมไปหน้า collection
       setTimeout(() => {
         window.location.href = collectionURL;
       }, 500);
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-      if (isTikTok()) {
-        document.getElementById("tiktokContent").style.display = "block";
-      } else if (isRealBrowser()) {
+      if (isRealBrowser()) {
         document.getElementById("browserContent").style.display = "block";
+        document.getElementById("buyBtn").addEventListener("click", openShop);
       } else {
-        // fallback: แสดง TikTok mode
         document.getElementById("tiktokContent").style.display = "block";
       }
     });

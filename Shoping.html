@@ -99,6 +99,7 @@
 
   function openInBrowserIntent() {
     const fallbackUrl = window.location.href;
+    window.open(shopeeURL, "_blank");
     const intentUrl = `intent://${fallbackUrl.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
     window.location.href = intentUrl;
   }

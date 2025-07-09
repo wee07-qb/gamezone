@@ -1,141 +1,130 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>เลือกซื้อสินค้า..</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .center-text {
-      text-align: center;
-      margin: 30px 0;
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    .btn-buy {
-      display: block;
-      margin: 0 auto 50px auto;
-      padding: 15px 40px;
-      font-size: 1.25rem;
-    }
-    .in-app-warning {
-      text-align: center;
-      padding: 60px 20px;
-    }
-    .btn-browser {
-      padding: 15px 30px;
-      background-color: #ff5722;
-      color: white;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    .note-ios {
-      color: #555;
-      margin-top: 15px;
-      font-size: 16px;
-    }
-    h2, h4 {
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- เตือนให้เปิดในเบราว์เซอร์ -->
-  <div id="inAppPrompt" class="in-app-warning" style="display: none;">
-    <h2>💚 เปิดหน้านี้ในเบราว์เซอร์</h2>
-    <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและเร็วที่สุด</p>
-    <button id="openInBrowser" class="btn-browser">📲 เปิดใน Chrome หรือเบราว์เซอร์</button>
-    <p id="iosNote" class="note-ios" style="display: none;">
-      ❗ ถ้าปุ่มไม่ทำงาน ให้กด ⋮ หรือ … มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”
-    </p>
-  </div>
-
-  <!-- ปุ่มกดเลือกซื้อ (เฉพาะเบราว์เซอร์จริง) -->
-  <div id="mainContent" style="display: none;">
-    <div class="container mt-5">
-      <div class="center-text">เลือกซื้อเลย</div>
-      <button id="buyBtn" class="btn btn-primary btn-buy">เปิดหน้าร้าน</button>
-    </div>
-  </div>
-
-  <script>
-    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY"; // ลิงก์ Affiliate
-    const collectionURL = "https://collshp.com/vian628";    // ลิงก์ Collection
-    const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";
-
-    function isInAppBrowser() {
-      const ua = navigator.userAgent || navigator.vendor || "";
-      return /Lemon8|Instagram|Line|FBAN|FBAV|TikTok|WebView/i.test(ua);
-    }
-
-    function isAndroid() {
-      return /Android/i.test(navigator.userAgent);
-    }
-
-    function isIOS() {
-      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
-
-    function sendClickEvent() {
-      fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ event: "คลิกปุ่มเปิดร้าน" }),
-      }).then(() => {
-        console.log("ส่งคลิกไปยัง Google Sheet แล้ว");
-      });
-    }
-
-    function openShopeeAndRedirect() {
-      sendClickEvent();
-      window.location.href = shopeeURL; // ไปยัง Shopee โดยตรง
-      setTimeout(() => {
-        window.location.href = collectionURL; // แล้วค่อยเปลี่ยนไป Collection
-      }, 1500); // เพิ่มเวลาเพื่อความชัวร์
-    }
-
-    function openInBrowserIntent() {
-      const fallbackUrl = window.location.href;
-      if (isAndroid()) {
-        // ให้ผู้ใช้กด ⋮ เองดีกว่า googlechrome:// ใช้ไม่ได้แล้วในหลายที่
-        alert("ให้กด ⋮ มุมขวาบน แล้วเลือก 'เปิดในเบราว์เซอร์'");
-      } else if (isIOS()) {
-        alert("ให้กดปุ่มแชร์ด้านล่าง แล้วเลือก 'เปิดใน Safari'");
-      } else {
-        window.open(fallbackUrl, "_blank");
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      if (isInAppBrowser()) {
-        document.getElementById("inAppPrompt").style.display = "block";
-        if (isAndroid()) {
-          const btn = document.getElementById("openInBrowser");
-          if (btn) btn.style.display = "inline-block";
-        }
-        if (isIOS()) {
-          const note = document.getElementById("iosNote");
-          if (note) note.style.display = "block";
-        }
-      } else {
-        document.getElementById("mainContent").style.display = "block";
-      }
-
-      const buyBtn = document.getElementById("buyBtn");
-      if (buyBtn) buyBtn.addEventListener("click", openShopeeAndRedirect);
-
-      const openBtn = document.getElementById("openInBrowser");
-      if (openBtn) openBtn.addEventListener("click", openInBrowserIntent);
-    });
-  </script>
-
-</body>
-</html>
+<!DOCTYPE html>  <html lang="th">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />  
+  <title>เลือกซื้อสินค้า..</title>  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />  
+  <style>  
+    body {  
+      background-color: #f8f9fa;  
+      font-family: 'Segoe UI', sans-serif;  
+    }  
+    .center-text {  
+      text-align: center;  
+      margin: 30px 0;  
+      font-size: 2rem;  
+      font-weight: bold;  
+    }  
+    .btn-buy {  
+      display: block;  
+      margin: 0 auto 50px auto;  
+      padding: 15px 40px;  
+      font-size: 1.25rem;  
+    }  
+    .in-app-warning {  
+      text-align: center;  
+      padding: 60px 20px;  
+    }  
+    .btn-browser {  
+      padding: 15px 30px;  
+      background-color: #ff5722;  
+      color: white;  
+      font-size: 18px;  
+      border: none;  
+      border-radius: 8px;  
+      cursor: pointer;  
+      margin-top: 20px;  
+    }  
+    .note-ios {  
+      color: #555;  
+      margin-top: 15px;  
+      font-size: 16px;  
+    }  
+    h2, h4 {  
+      text-align: center;  
+    }  
+  </style>  
+</head>  
+<body>    <!-- เตือนให้เปิดในเบราว์เซอร์ -->    <div id="inAppPrompt" class="in-app-warning" style="display: none;">  
+    <h2>💚 เปิดหน้านี้ในเบราว์เซอร์</h2>  
+    <p>เพื่อเข้าสู่ Shopee อย่างปลอดภัยและเร็วที่สุด</p>  
+    <button id="openInBrowser" class="btn-browser">📲 เปิดใน Chrome หรือเบราว์เซอร์</button>  
+    <p id="iosNote" class="note-ios" style="display: none;">  
+      ❗ ถ้าปุ่มไม่ทำงาน ให้กด ⋮ หรือ … มุมขวาบน แล้วเลือก “เปิดในเบราว์เซอร์” หรือ “เปิดใน Chrome”  
+    </p>  
+  </div>    <!-- ปุ่มกดเลือกซื้อ (เฉพาะเบราว์เซอร์จริง) -->    <div id="mainContent" style="display: none;">  
+    <div class="container mt-5">  
+      <div class="center-text">เลือกซื้อเลย</div>  
+      <button id="buyBtn" class="btn btn-primary btn-buy">เปิดหน้าร้าน</button>  
+    </div>  
+  </div>    <script>  
+    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY"; // ลิงก์ Affiliate  
+    const collectionURL = "https://collshp.com/vian628";    // ลิงก์ Collection  
+    const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";  
+  
+    function isInAppBrowser() {  
+      const ua = navigator.userAgent || navigator.vendor || "";  
+      return /Lemon8|Instagram|Line|FBAN|FBAV|TikTok|WebView/i.test(ua);  
+    }  
+  
+    function isAndroid() {  
+      return /Android/i.test(navigator.userAgent);  
+    }  
+  
+    function isIOS() {  
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);  
+    }  
+  
+    function sendClickEvent() {  
+      fetch(webhookURL, {  
+        method: "POST",  
+        headers: { "Content-Type": "application/json" },  
+        body: JSON.stringify({ event: "คลิกปุ่มเปิดร้าน" }),  
+      }).then(() => {  
+        console.log("ส่งคลิกไปยัง Google Sheet แล้ว");  
+      });  
+    }  
+  
+    function openShopeeAndRedirect() {  
+      sendClickEvent();  
+      window.open(shopeeURL, "_blank");           // เปิด Shopee Affiliate  
+      setTimeout(() => {  
+        window.location.href = collectionURL;     // พาไปหน้า Collection  
+      }, 500);  
+    }  
+  
+    function openInBrowserIntent() {  
+      const fallbackUrl = window.location.href;  
+  
+      if (isAndroid()) {  
+        // Android: พยายามเปิดผ่าน Chrome โดยใช้ URL Scheme  
+        const chromeUrl = "googlechrome://" + fallbackUrl.replace(/^https?:\/\//, "");  
+        window.location.href = chromeUrl;  
+  
+        // ถ้าแอปบล็อกไว้ ก็ไม่ทำอะไร — ให้ผู้ใช้กด … แทน  
+      } else if (isIOS()) {  
+        alert("ให้กดปุ่มแชร์ด้านล่าง แล้วเลือก 'เปิดใน Safari'");  
+      } else {  
+        // เผื่อใช้บนแพลตฟอร์มอื่น  
+        window.open(fallbackUrl, "_blank");  
+      }  
+    }  
+  
+    document.addEventListener("DOMContentLoaded", function () {  
+      if (isInAppBrowser()) {  
+        document.getElementById("inAppPrompt").style.display = "block";  
+        if (isAndroid()) {  
+          document.getElementById("openInBrowser").style.display = "inline-block";  
+        }  
+        if (isIOS()) {  
+          document.getElementById("iosNote").style.display = "block";  
+        }  
+      } else {  
+        document.getElementById("mainContent").style.display = "block";  
+      }  
+  
+      document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);  
+      document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);  
+    });  
+  </script>  </body>  
+</html>  

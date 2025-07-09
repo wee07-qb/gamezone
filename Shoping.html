@@ -96,25 +96,20 @@
 
     function openShopeeAndRedirect() {
       sendClickEvent();
-      window.open(shopeeURL, "_blank");           // เปิด Shopee Affiliate
+      window.location.href = shopeeURL; // ไปยัง Shopee โดยตรง
       setTimeout(() => {
-        window.location.href = collectionURL;     // พาไปหน้า Collection
-      }, 500);
+        window.location.href = collectionURL; // แล้วค่อยเปลี่ยนไป Collection
+      }, 1500); // เพิ่มเวลาเพื่อความชัวร์
     }
 
     function openInBrowserIntent() {
       const fallbackUrl = window.location.href;
-
       if (isAndroid()) {
-        // Android: พยายามเปิดผ่าน Chrome โดยใช้ URL Scheme
-        const chromeUrl = "googlechrome://" + fallbackUrl.replace(/^https?:\/\//, "");
-        window.location.href = chromeUrl;
-
-        // ถ้าแอปบล็อกไว้ ก็ไม่ทำอะไร — ให้ผู้ใช้กด … แทน
+        // ให้ผู้ใช้กด ⋮ เองดีกว่า googlechrome:// ใช้ไม่ได้แล้วในหลายที่
+        alert("ให้กด ⋮ มุมขวาบน แล้วเลือก 'เปิดในเบราว์เซอร์'");
       } else if (isIOS()) {
         alert("ให้กดปุ่มแชร์ด้านล่าง แล้วเลือก 'เปิดใน Safari'");
       } else {
-        // เผื่อใช้บนแพลตฟอร์มอื่น
         window.open(fallbackUrl, "_blank");
       }
     }
@@ -123,17 +118,22 @@
       if (isInAppBrowser()) {
         document.getElementById("inAppPrompt").style.display = "block";
         if (isAndroid()) {
-          document.getElementById("openInBrowser").style.display = "inline-block";
+          const btn = document.getElementById("openInBrowser");
+          if (btn) btn.style.display = "inline-block";
         }
         if (isIOS()) {
-          document.getElementById("iosNote").style.display = "block";
+          const note = document.getElementById("iosNote");
+          if (note) note.style.display = "block";
         }
       } else {
         document.getElementById("mainContent").style.display = "block";
       }
 
-      document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);
-      document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);
+      const buyBtn = document.getElementById("buyBtn");
+      if (buyBtn) buyBtn.addEventListener("click", openShopeeAndRedirect);
+
+      const openBtn = document.getElementById("openInBrowser");
+      if (openBtn) openBtn.addEventListener("click", openInBrowserIntent);
     });
   </script>
 

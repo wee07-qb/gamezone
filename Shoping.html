@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>เลือกซื้อสินค้า.1.</title>
+  <title>เลือกซื้อสินค้า..</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
@@ -67,8 +67,8 @@
   </div>
 
   <script>
-    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY"; // ลิงก์ Affiliate
-    const collectionURL = "https://collshp.com/vian628";    // ลิงก์ Collection
+    const shopeeURL = "https://s.shopee.co.th/9UpMxtrTTY";
+    const collectionURL = "https://collshp.com/vian628";
     const webhookURL = "https://script.google.com/macros/s/AKfycbz0ujMMAvQ9LpNZ1osM2MDCPb-LLNhcuq7VIHci6xiQcUyFgik2-EMhoe88le-i-C2VeQ/exec";
 
     function isInAppBrowser() {
@@ -96,17 +96,19 @@
 
     function openShopeeAndRedirect() {
       sendClickEvent();
-      window.location.href = shopeeURL; // ไปยัง Shopee โดยตรง
+      window.location.href = shopeeURL;
       setTimeout(() => {
-        window.location.href = collectionURL; // แล้วค่อยเปลี่ยนไป Collection
-      }, 1500); // เพิ่มเวลาเพื่อความชัวร์
+        window.location.href = collectionURL;
+      }, 1500);
     }
 
     function openInBrowserIntent() {
       const fallbackUrl = window.location.href;
+
       if (isAndroid()) {
-        // ให้ผู้ใช้กด ⋮ เองดีกว่า googlechrome:// ใช้ไม่ได้แล้วในหลายที่
-        alert("ให้กด ⋮ มุมขวาบน แล้วเลือก 'เปิดในเบราว์เซอร์'");
+        // ใช้ intent:// เพื่อเปิด Chrome โดยตรง
+        const intentUrl = `intent://${fallbackUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
+        window.location.href = intentUrl;
       } else if (isIOS()) {
         alert("ให้กดปุ่มแชร์ด้านล่าง แล้วเลือก 'เปิดใน Safari'");
       } else {

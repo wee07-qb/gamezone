@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>เลือกซื้อสินค้า</title>
+  <title>เลือกซื้อสินค้า.1.</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
@@ -96,17 +96,17 @@
 
     function openShopeeAndRedirect() {
       sendClickEvent();
-      window.open(shopeeURL, "_blank");           // เปิด Shopee Affiliate
+      window.location.href = shopeeURL; // ไปยัง Shopee โดยตรง
       setTimeout(() => {
-        window.location.href = collectionURL;     // พาไปหน้า Collection
-      }, 500);
+        window.location.href = collectionURL; // แล้วค่อยเปลี่ยนไป Collection
+      }, 1500); // เพิ่มเวลาเพื่อความชัวร์
     }
 
     function openInBrowserIntent() {
       const fallbackUrl = window.location.href;
       if (isAndroid()) {
-        const chromeUrl = "googlechrome://" + fallbackUrl.replace(/^https?:\/\//, "");
-        window.location.href = chromeUrl;
+        // ให้ผู้ใช้กด ⋮ เองดีกว่า googlechrome:// ใช้ไม่ได้แล้วในหลายที่
+        alert("ให้กด ⋮ มุมขวาบน แล้วเลือก 'เปิดในเบราว์เซอร์'");
       } else if (isIOS()) {
         alert("ให้กดปุ่มแชร์ด้านล่าง แล้วเลือก 'เปิดใน Safari'");
       } else {
@@ -118,16 +118,22 @@
       if (isInAppBrowser()) {
         document.getElementById("inAppPrompt").style.display = "block";
         if (isAndroid()) {
-          document.getElementById("openInBrowser").style.display = "inline-block";
-          document.getElementById("openInBrowser").addEventListener("click", openInBrowserIntent);
+          const btn = document.getElementById("openInBrowser");
+          if (btn) btn.style.display = "inline-block";
         }
         if (isIOS()) {
-          document.getElementById("iosNote").style.display = "block";
+          const note = document.getElementById("iosNote");
+          if (note) note.style.display = "block";
         }
       } else {
         document.getElementById("mainContent").style.display = "block";
-        document.getElementById("buyBtn").addEventListener("click", openShopeeAndRedirect);
       }
+
+      const buyBtn = document.getElementById("buyBtn");
+      if (buyBtn) buyBtn.addEventListener("click", openShopeeAndRedirect);
+
+      const openBtn = document.getElementById("openInBrowser");
+      if (openBtn) openBtn.addEventListener("click", openInBrowserIntent);
     });
   </script>
 

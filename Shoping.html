@@ -95,18 +95,27 @@
     }
 
     function openShopeeAndRedirect() {
-      sendClickEvent();
-      window.location.href = shopeeURL;
-      setTimeout(() => {
+      const lastClickTime = localStorage.getItem("lastClickTime");
+      const now = Date.now();
+
+      if (lastClickTime && now - parseInt(lastClickTime) <= 2 * 60 * 1000) {
+        // เคยกดและยังไม่เกิน 2 นาที → ไป Collection ทันที
         window.location.href = collectionURL;
-      }, 1500);
+      } else {
+        // ยังไม่เคยกด หรือเกิน 2 นาที → ไป Affiliate แล้วไป Collection
+        sendClickEvent();
+        localStorage.setItem("lastClickTime", now.toString());
+        window.open(shopeeURL, "_blank");
+        setTimeout(() => {
+          window.location.href = collectionURL;
+        }, 1500);
+      }
     }
 
     function openInBrowserIntent() {
       const fallbackUrl = window.location.href;
 
       if (isAndroid()) {
-        // ใช้ intent:// เพื่อเปิด Chrome โดยตรง
         const intentUrl = `intent://${fallbackUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         window.location.href = intentUrl;
       } else if (isIOS()) {
